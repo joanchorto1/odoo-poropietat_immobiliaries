@@ -1,0 +1,96 @@
+<?xml version="1.0"?>
+<odoo>
+    <record id="estate_property_action" model="ir.actions.act_window">
+        <field name="name">Propietats immobiliaries</field>
+        <field name="res_model">estate.property</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+    <record id="view_estate_property_tree" model="ir.ui.view">
+        <field name="name">estate.property.tree</field>
+        <field name="model">estate.property</field>
+        <field name="arch" type="xml">
+            <tree string="Propietats">
+                <field name="name"/>
+                <field name="property_type_id"/>
+                <field name="postal_code"/>
+                <field name="availability_date"/>
+                <field name="sale_price"/>
+                <field name="expected_sale_price"/>
+                <field name="salesman"/>
+                <field name="buyer"/>
+                <field name="state"/>
+            </tree>
+        </field>
+    </record>
+    <record id="view_estate_property_form" model="ir.ui.view">
+        <field name="name">estate.property.form</field>
+        <field name="model">estate.property</field>
+        <field name="arch" type="xml">
+            <form string="Propietat Immobiliària">
+                <group>
+                    <group>
+                        <field name="name"/>
+                        <field name="tag_ids" widget="many2many_tags"/>
+                        <field name="postal_code"/>
+                        <field name="availability_date"/>
+                        <field name="expected_sale_price"/>
+                        <field name="best_offer"/>
+                    </group>
+                    <group>
+                        <field name="state"/>
+                        <field name="property_type_id"/>
+                    </group>
+                </group>
+                <notebook>
+                    <page string="Descripció">
+                        <group>
+                            <group>
+                                <field name="description" widget="html" placeholder="Introdueix una descripció detallada de la propietat"/>
+                                <field name="num_bedrooms"/>
+                                <field name="num_bathrooms"/>
+                                <field name="surface_area"/>
+                                <field name="construction_year"/>
+                            </group>
+                            <group>
+                                <field name="elevator"/>
+                                <field name="parking"/>
+                                <field name="renovated"/>
+                                <field name="price_per_sqm"/>
+                                <field name="energy_certificate"/>
+                            </group>
+                        </group>
+                    </page>
+                    <page string="Ofertes">
+                        <field name="offers">
+                            <tree string="Ofertes">
+                                <field name="price"/>
+                                <field name="state"/>
+                                <field name="buyer_id"/>
+                                <field name="comments"/>
+                            </tree>
+                        </field>
+                    </page>
+                </notebook>
+            </form>
+        </field>
+    </record>
+    <record id="view_estate_property_filter" model="ir.ui.view">
+        <field name="name">estate.property.filter</field>
+        <field name="model">estate.property</field>
+        <field name="arch" type="xml">
+            <search string="Cerca de propietats">
+                <field name="name" string="Nom"/>
+                <field name="property_type_id" string="Tipus de propietat"/>
+                <field name="postal_code" string="Codi postal"/>
+                <field name="expected_sale_price" string="Preu de venda esperat"/>
+                <field name="state" string="Estat"/>
+                <field name="availability_date" string="Data de disponibilitat"/>
+                <filter name="available" string="Disponibles" domain="[('state', 'in', ('new', 'offer_received'))]"/>
+                <filter name="low_price" string="Baix preu" domain="[('sale_price', '&lt;', 100000)]"/>
+                <group expand="0" string="Agrupació per tipus">
+                    <filter name="property_type_id" string="Tipus de propietat" context="{'group_by':'property_type_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+</odoo>
